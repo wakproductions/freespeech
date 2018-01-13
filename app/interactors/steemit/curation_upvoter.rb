@@ -1,5 +1,3 @@
-# this comment is a trivial change
-
 module Steemit
   class CurationUpvoter
 
