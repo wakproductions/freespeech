@@ -1,0 +1,4 @@
+-if signed_in?
+  = current_user
+-else
+  = link_to('Sign In', sessions_path, method: :post)

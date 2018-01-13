@@ -1,0 +1,11 @@
+# Read about fixtures at http://api.rubyonrails.org/classes/ActiveRecord/FixtureSet.html
+
+one:
+  video_source_480p: MyString
+  body_text: MyText
+  steemit_permlink_id: MyString
+
+two:
+  video_source_480p: MyString
+  body_text: MyText
+  steemit_permlink_id: MyString

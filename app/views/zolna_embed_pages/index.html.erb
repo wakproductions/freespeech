@@ -1,0 +1,27 @@
+<p id="notice"><%= notice %></p>
+
+<h1>Zolna Embed Pages</h1>
+
+<table>
+  <thead>
+    <tr>
+      <th>Title</th>
+      <th>Additional tags</th>
+      <th>Steemit permalink</th>
+    </tr>
+  </thead>
+
+  <tbody>
+    <% @zolna_embed_pages.each do |zolna_embed_page| %>
+      <tr>
+        <td><%= link_to(zolna_embed_page.title, edit_zolna_embed_page_path(zolna_embed_page)) %></td>
+        <td><%= zolna_embed_page.additional_tags %></td>
+        <td><%= zolna_embed_page.steemit_permalink %></td>
+      </tr>
+    <% end %>
+  </tbody>
+</table>
+
+<br>
+
+<%= link_to 'New Zolna Embed Page', new_zolna_embed_page_path %>

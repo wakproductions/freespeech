@@ -1,0 +1,33 @@
+FROM node:latest
+
+RUN apt-get update && \
+    apt-get -y install libgtk2.0-0 libxtst-dev libxss-dev libgconf2-dev libnss3 libasound2-dev
+
+# install python - source: https://hub.docker.com/r/frolvlad/alpine-python2/~/dockerfile/
+#RUN apt-get -y install python3 && \
+#    apt-get -y install python-pip && \
+#    pip install --upgrade pip setuptools
+
+#RUN apt-get -y install build-essential clang libdbus-1-dev libgtk2.0-dev \
+#                           libnotify-dev libgnome-keyring-dev libgconf2-dev \
+#                           libasound2-dev libcap-dev libcups2-dev libxtst-dev \
+#                           libxss1 libnss3-dev gcc-multilib g++-multilib curl \
+#                           gperf bison
+#
+RUN apt-get -y install xvfb
+
+WORKDIR /app
+RUN npm init -f
+#RUN npm install webtorrent-hybrid
+#    npm install electron && \
+#    npm install webtorrent && \
+#    npm install webtorrent-hybrid -g --unsafe-perm
+
+RUN npm install webtorrent
+RUN npm install webtorrent-cli -g --unsafe-perm
+
+COPY /webtorrent_app /app
+
+RUN exec "$@";
+#RUN exec node;
+

@@ -1,0 +1,9 @@
+{
+  "name": "freespeech",
+  "private": true,
+  "dependencies": {
+    "webtorrent": "^0.98.20",
+    "webtorrent-cli": "^1.11.0",
+    "webtorrent-hybrid": "^1.0.6"
+  }
+}

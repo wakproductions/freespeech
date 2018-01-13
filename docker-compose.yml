@@ -1,0 +1,42 @@
+version: '3'
+
+# To run container bash:
+# - docker-compose run webtorrenthybrid /bin/sh
+
+services:
+  # docker-compose -f docker-compose-webtorrent.yml run webtorrent /bin/bash
+  # docker-compose -f docker-compose-webtorrent.yml exec webtorrent node /app/get_file_info.js <file>
+  # docker-compose -f docker-compose-webtorrent.yml up -d
+  webtorrent:
+    build:
+      context: .
+      dockerfile: Dockerfile-webtorrent-jessie
+    volumes:
+      - "${IPFS_FILE_SERVER_FILES}:/app/content"
+    tty: true
+
+  # docker run --name ipfs-node -v /Users/wkotzan/development/freespeech/tmp/ipfs-docker-staging:/export -v /Users/wkotzan/development/freespeech/gitignore/share_content:/data/ipfs -p 8080:8080 -p 4001:4001 -p 127.0.0.1:5001:5001 jbenet/go-ipfs:latest
+  # docker-compose -f docker-compose-ipfs.yml up
+  ipfs:
+    container_name: ipfs_node
+    environment:
+      IPFS_FD_MAX: 32768
+    image: jbenet/go-ipfs:latest
+    ports:
+      - "8080:8080"
+      - "4001:4001"
+      - "127.0.0.1:5001:5001"
+    volumes:
+      - "./data/docker-ipfs-data:/data/ipfs"
+      - "./data/share_content:/share_content"
+      - "./tmp/ipfs-docker-staging:/export"
+
+  gitserver:
+    image: jkarlos/git-server-docker
+    ports:
+      - "2222:22"
+    volumes:
+      - "./data/git-server/keys:/git-server/keys"
+      - "./data/git-server/repos:/git-server/repos"
+
+  

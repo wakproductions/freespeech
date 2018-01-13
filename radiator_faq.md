@@ -1,0 +1,2 @@
+[How can I get the permalink of the last post from an Author?](https://github.com/inertia186/radiator/issues/15#issuecomment-351620999)
+[How to follow/unfollow somone?](https://github.com/inertia186/radiator/issues/17#issuecomment-351624703)

@@ -1,0 +1,15 @@
+doctype html
+html(lang="en")
+  head
+    = render('layouts/head')
+  body
+    /= render('layouts/navbar')
+
+    #flash-messages.container-fluid
+      = render('layouts/flash_messages')
+
+    #main-container.container-fluid
+      = yield
+
+    footer role="footer"
+      =render('layouts/footer')

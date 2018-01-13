@@ -1,0 +1,43 @@
+= form_with(model: zolna_embed_page, local: true) do |form|
+  .row
+    .col-sm-1
+        span.glyphicon.glyphicon-chevron-left(aria-hidden="true")
+    .col-sm-10
+      .field.form-group
+        = form.label :title
+        = form.text_field :title, id: :zolna_embed_page_title, class: 'form-control'
+    .col-sm-1
+      =link_to(next_zolna_embed_page_path(zolna_embed_page)) do
+        span.glyphicon.glyphicon-chevron-right(aria-hidden="true")
+      
+  .field.form-group
+    = form.label :description
+    = form.text_area :description, id: :zolna_embed_page_description, class: 'form-control'
+
+  .row
+    .col-md-6
+      .field.form-group
+        = form.label :video_snap_url
+        = image_tag(zolna_embed_page.video_snap_url, class: 'img-responsive')
+        /= form.text_field :video_snap_url, id: :zolna_embed_page_video_snap_url, class: 'form-control'
+    .col-md-6
+      .field.form-group
+        = form.label :iframe_url
+        = link_to("Video", zolna_embed_page.iframe_url, target: "_blank", class: 'form-control')
+        /.embed-responsive.embed-responsive-16by9
+        /  iframe.embed-responsive-item(src="#{zolna_embed_page.iframe_url}" autoplay="false")
+        /= form.text_field :source_mp4_url, id: :zolna_embed_page_source_mp4_url, class: 'form-control'
+
+  .field.form-group
+    = form.label :additional_tags
+    = form.text_field :additional_tags, id: :zolna_embed_page_additional_tags, class: 'form-control'
+
+  .field.form-group
+    = form.label :steemit_permalink
+    = form.text_field :steemit_permalink, id: :zolna_embed_page_steemit_permalink, class: 'form-control'
+
+  .actions
+    = form.submit(class: 'btn btn-default')
+    =link_to("Post To Steemit", post_to_steemit_zolna_embed_page_path(zolna_embed_page), method: :post, class: "btn btn-primary")
+    =link_to("Skip", skip_posting_zolna_embed_page_path(zolna_embed_page), method: :post, class: "btn btn-danger")
+    =link_to("Favorite", favorite_zolna_embed_page_path(zolna_embed_page), method: :post, class: select_favorite_class(zolna_embed_page))

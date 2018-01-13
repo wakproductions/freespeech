@@ -1,0 +1,20 @@
+version: '3'
+
+# To run container bash:
+# - docker-compose run webtorrenthybrid /bin/sh
+
+services:
+  # docker-compose -f docker-compose-ipfs.yml up
+  ipfs:
+    container_name: ipfs_node
+    environment:
+      IPFS_FD_MAX: 32768
+    image: jbenet/go-ipfs:latest
+    ports:
+      - "8080:8080"
+      - "4001:4001"
+      - "127.0.0.1:5001:5001"
+    volumes:
+      - "./gitignore/docker-ipfs-data:/data/ipfs"
+      - "./gitignore/share_content:/share_content"
+      - "./tmp/ipfs-docker-staging:/export"
