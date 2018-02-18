@@ -3,6 +3,7 @@ namespace :daemons do
   desc "Runs the daily market scanning background programs"
   task :run_zolna => :environment do
     # infinite loop until Ctrl+C hit
+    puts "Starting Zolna Steemit Daemon - #{Time.current}"
     while 1 do
       until (post = ZolnaEmbedPage.in_post_queue.first).present? && valid_hour?
         sleep 600
