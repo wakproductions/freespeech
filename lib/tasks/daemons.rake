@@ -59,7 +59,7 @@ namespace :daemons do
     if Date.current.on_weekday?
       Time.current.hour >=19 && Time.current.hour < 22
     else
-      Time.current.hour >=11 && Time.current.hour < 23
+      Time.current.hour >=11 && Time.current.hour < 21
     end
   end
 
