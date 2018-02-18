@@ -39,7 +39,7 @@ POST
     def post_transaction
       tx = Radiator::Transaction.new(wif: STEEMIT_POSTING_KEY)
       tx.operations << steemit_details
-      tx.operations << steemit_options
+      # tx.operations << steemit_options
       tx.process(true)
     end
 
@@ -75,7 +75,7 @@ POST
     end
 
     def steemit_permalink
-      "2017-#{Zolna::Common.steemit_permalink_from_title(local_record.title)}"
+      "2018-#{Zolna::Common.steemit_permalink_from_title(local_record.title)}"
     end
 
     def steemit_tags
@@ -83,7 +83,7 @@ POST
     end
 
     def update_local_record
-      local_record.update(steemit_permalink: steemit_permalink, steemit_post_content:post_text, steemit_post_time: Time.now, steemit_post_response: steemit_result.to_json)
+      local_record.update(steemit_permalink: steemit_permalink, steemit_post_content:post_text, steemit_post_time: Time.current, steemit_post_response: steemit_result.to_json)
     end
   end
 end

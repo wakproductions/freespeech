@@ -4,16 +4,20 @@ namespace :daemons do
   task :run_zolna => :environment do
     # infinite loop until Ctrl+C hit
     while 1 do
-      until valid_hour?
-        sleep 60
+      until (post = ZolnaEmbedPage.in_post_queue.first).present? && valid_hour?
+        sleep 600
+        puts "Queue Count: #{ZolnaEmbedPage.in_post_queue.count} - sleep 600s (#{Time.current})"
+
+        Zolna::ParseDirectoryListing.call
+        Zolna::ExtractVideoMetadata.update_local_database
+        ZolnaEmbedPage.where(additional_tags: nil).update(additional_tags: 'politics')
+        ZolnaEmbedPage.postable.each { |post| post.add_to_queue }
+
+        puts ZolnaEmbedPage.in_post_queue.first.title
+
       end
 
-      until (post = ZolnaEmbedPage.in_post_queue.first).present?
-        puts "Queue Count: #{ZolnaEmbedPage.in_post_queue.count} - sleep 30s (#{Time.now})"
-        sleep 30
-      end
-
-      puts "Posting #{post.title} (#{post.permalink_id}) - #{Time.now}"
+      puts "Posting #{post.title} (#{post.permalink_id}) - #{Time.current}"
       outcome, value = Zolna::PostToSteemit.(permalink_id: post.permalink_id)
       post.reload
       puts post.steemit_post_response
@@ -52,10 +56,10 @@ namespace :daemons do
   end
 
   def valid_hour?
-    if Date.today.on_weekday?
-      Time.now.hour >=19 && Time.now.hour < 22
+    if Date.current.on_weekday?
+      Time.current.hour >=19 && Time.current.hour < 22
     else
-      Time.now.hour >=11 && Time.now.hour < 21
+      Time.current.hour >=11 && Time.current.hour < 23
     end
   end
 

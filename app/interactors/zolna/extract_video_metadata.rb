@@ -3,7 +3,7 @@ module Zolna
     include Verbalize::Action
     include Zolna::Common
 
-    CURRENT_YEAR='2017'
+    CURRENT_YEAR='2018'
 
     input :permalink_id
 
@@ -12,7 +12,9 @@ module Zolna
     end
 
     def self.update_local_database
-      ZolnaEmbedPage.where(iframe_url: nil).map { |ep| ep.update(self.class.call(permalink_id: ep.permalink_id).value) }
+      # ZolnaEmbedPage.where(iframe_url: nil)
+      ZolnaEmbedPage.where(title: nil)
+        .map { |ep| ep.update(self.call(permalink_id: ep.permalink_id).value) }
     end
 
     private

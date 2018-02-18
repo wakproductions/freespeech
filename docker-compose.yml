@@ -1,42 +1,47 @@
 version: '3'
 
-# To run container bash:
-# - docker-compose run webtorrenthybrid /bin/sh
-
 services:
-  # docker-compose -f docker-compose-webtorrent.yml run webtorrent /bin/bash
-  # docker-compose -f docker-compose-webtorrent.yml exec webtorrent node /app/get_file_info.js <file>
-  # docker-compose -f docker-compose-webtorrent.yml up -d
-  webtorrent:
-    build:
-      context: .
-      dockerfile: Dockerfile-webtorrent-jessie
-    volumes:
-      - "${IPFS_FILE_SERVER_FILES}:/app/content"
-    tty: true
-
-  # docker run --name ipfs-node -v /Users/wkotzan/development/freespeech/tmp/ipfs-docker-staging:/export -v /Users/wkotzan/development/freespeech/gitignore/share_content:/data/ipfs -p 8080:8080 -p 4001:4001 -p 127.0.0.1:5001:5001 jbenet/go-ipfs:latest
-  # docker-compose -f docker-compose-ipfs.yml up
-  ipfs:
-    container_name: ipfs_node
+  steemit_daemon:
+    build: .
+    container_name: zolna_steemit_daemon
+    # need the sleep to wait for the DB service to get up and running
+    command: ["./wait-for-database.sh", "database", "5432", "--", "bundle exec rake daemons:run_zolna"]
+#    command: ["./wait-for-database.sh", "database", "5432", "--", "bundle exec rails c"]
+    depends_on:
+      - database
     environment:
-      IPFS_FD_MAX: 32768
-    image: jbenet/go-ipfs:latest
+      - RAILS_ENV=${RAILS_ENV:-development}
+      - DATABASE_URL=${DATABASE_URL:-postgres://database:5432}
+      - RAILS_SERVE_STATIC_FILES=${RAILS_SERVE_STATIC_FILES}
+      - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+      - STEEM_WIF_GREENSPUDTRADES=null
+      - STEEM_WIF_ZOLNA=${STEEM_WIF_ZOLNA}
+      - STEEM_WIF_ZOLNAREPORT=${STEEM_WIF_ZOLNA}
+    networks:
+      - freespeech
     ports:
-      - "8080:8080"
-      - "4001:4001"
-      - "127.0.0.1:5001:5001"
+      - ${HTTP_PORT:-80}:3000
+    tty: true
     volumes:
-      - "./data/docker-ipfs-data:/data/ipfs"
-      - "./data/share_content:/share_content"
-      - "./tmp/ipfs-docker-staging:/export"
+      - .:/app
+#      - ./log:/app/log
+#      - ./public/assets:/app/public/assets
 
-  gitserver:
-    image: jkarlos/git-server-docker
+  database:
+    container_name: zolna_database
+    image: "postgres:9.6.5-alpine"
+    environment:
+      POSTGRES_USER: ${DB_USER}
+      POSTGRES_PASSWORD: ${DB_PASSWORD}
+      POSTGRES_DB: ${DB_NAME}
+      DB_DATA_DIR: ${DB_DATA_DIR}
+    networks:
+      - freespeech
     ports:
-      - "2222:22"
+      - "5444:5432"
     volumes:
-      - "./data/git-server/keys:/git-server/keys"
-      - "./data/git-server/repos:/git-server/repos"
+      - "./data/postgres_data_965:${DB_DATA_DIR}"
+      - "./data/postgres_backups:/postgres_backups"
 
-  
+networks:
+  freespeech:

@@ -40,7 +40,7 @@ module Steemit
         voted_as_user: voting_as_user,
         post_author: post_author,
         steemit_permalink_id: post_steemit_permalink_id,
-        voted_at: Time.now,
+        voted_at: Time.current,
       )
     end
 
