@@ -13,9 +13,6 @@ namespace :daemons do
         Zolna::ExtractVideoMetadata.update_local_database
         ZolnaEmbedPage.where(additional_tags: nil).update(additional_tags: 'politics')
         ZolnaEmbedPage.postable.each { |post| post.add_to_queue }
-
-        puts ZolnaEmbedPage.in_post_queue.first.title
-
       end
 
       puts "Posting #{post.title} (#{post.permalink_id}) - #{Time.current}"
