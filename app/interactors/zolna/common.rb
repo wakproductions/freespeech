@@ -2,6 +2,7 @@ module Zolna
   module Common
     BASE_URL='https://www.zolnareport.com/'
     STEEMIT_POSTING_KEY=ENV.fetch('STEEM_WIF_ZOLNAREPORT')
+    SERVER_ADDRESS='24.176.43.43'
 
     def self.steemit_permalink_from_title(title)
       CGI.unescapeHTML(title)

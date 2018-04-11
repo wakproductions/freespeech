@@ -17,6 +17,7 @@ gem 'uglifier', '>= 1.3.0'
 
 gem 'bootstrap-sass'
 
+gem 'ipfs'
 gem 'nokogiri'
 gem 'radiator'#, path: '~/Development/radiator'
 gem 'typhoeus'

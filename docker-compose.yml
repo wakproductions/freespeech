@@ -6,7 +6,6 @@ services:
     container_name: zolna_steemit_daemon
     # need the sleep to wait for the DB service to get up and running
     command: ["./wait-for-database.sh", "database", "5432", "--", "bundle exec rake daemons:run_zolna"]
-#    command: ["./wait-for-database.sh", "database", "5432", "--", "bundle exec rails c"]
     depends_on:
       - database
     environment:
@@ -24,6 +23,7 @@ services:
     tty: true
     volumes:
       - .:/app
+#      - /var/www/html:/app/data/share_content/zolnavids
 #      - ./log:/app/log
 #      - ./public/assets:/app/public/assets
 
@@ -42,6 +42,23 @@ services:
     volumes:
       - "./data/postgres_data_965:${DB_DATA_DIR}"
       - "./data/postgres_backups:/postgres_backups"
+
+  ipfs:
+    container_name: zolna_ipfs
+    environment:
+      IPFS_FD_MAX: 32768
+    image: jbenet/go-ipfs:latest
+    networks:
+      - freespeech
+    ports:
+      - "8080:8080"
+      - "4001:4001"
+      - "127.0.0.1:5001:5001"
+    volumes:
+      - "./data/docker-ipfs-data:/data/ipfs"
+      - "./data/share_content:/share_content"
+      - "./tmp/ipfs-docker-staging:/export"
+
 
 networks:
   freespeech:

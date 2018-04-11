@@ -25,6 +25,12 @@ module Zolna
       end
     end
 
+    def format_image_url(url)
+      uri = URI.parse(url)
+      uri.host = SERVER_ADDRESS
+      uri.to_s
+    end
+
     def iframe_html
       @iframe_html ||= Typhoeus.get(iframe_url)
     end
@@ -42,7 +48,7 @@ module Zolna
         description: get_tag('description'),
         iframe_url: iframe_url,
         title: get_tag('title'),
-        video_snap_url: get_tag('image'),
+        video_snap_url: format_image_url(get_tag('image')),
       }
     end
 
