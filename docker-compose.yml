@@ -13,17 +13,20 @@ services:
       - DATABASE_URL=${DATABASE_URL:-postgres://database:5432}
       - RAILS_SERVE_STATIC_FILES=${RAILS_SERVE_STATIC_FILES}
       - SECRET_KEY_BASE=${SECRET_KEY_BASE}
+      - CURRENT_YEAR=${CURRENT_YEAR}
       - STEEM_WIF_GREENSPUDTRADES=null
       - STEEM_WIF_ZOLNA=${STEEM_WIF_ZOLNA}
       - STEEM_WIF_ZOLNAREPORT=${STEEM_WIF_ZOLNA}
+      - ZOLNA_VIDEOS_SOURCE_DIR=${ZOLNA_VIDEOS_SOURCE_DIR}
     networks:
       - freespeech
     ports:
-      - ${HTTP_PORT:-80}:3000
+      - ${HTTP_PORT:-80}:32013
     tty: true
     volumes:
       - .:/app
-#      - /var/www/html:/app/data/share_content/zolnavids
+      - ${SHARE_CONTENT_DIR}:/app/data/share_content
+      - ${ZOLNA_VIDEOS_SERVER_SOURCE_DIR}:/app/data/zolnareport_source
 #      - ./log:/app/log
 #      - ./public/assets:/app/public/assets
 
@@ -44,10 +47,11 @@ services:
       - "./data/postgres_backups:/postgres_backups"
 
   ipfs:
+    command: "daemon --migrate=true --enable-namesys-pubsub"
     container_name: zolna_ipfs
     environment:
       IPFS_FD_MAX: 32768
-    image: jbenet/go-ipfs:latest
+    image: jbenet/go-ipfs:master
     networks:
       - freespeech
     ports:
@@ -58,7 +62,8 @@ services:
       - "./data/docker-ipfs-data:/data/ipfs"
       - "./data/share_content:/share_content"
       - "./tmp/ipfs-docker-staging:/export"
-
+      - ${SHARE_CONTENT_DIR}:/share_content
+      - ${ZOLNA_VIDEOS_SERVER_SOURCE_DIR}:/zolnareport_source
 
 networks:
   freespeech:
