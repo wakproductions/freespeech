@@ -10,7 +10,7 @@
 #
 # It's strongly recommended that you check this file into your version control system.
 
-ActiveRecord::Schema.define(version: 20180107182234) do
+ActiveRecord::Schema.define(version: 20180415170339) do
 
   # These are extensions that must be enabled in order to support this database
   enable_extension "plpgsql"
@@ -50,6 +50,19 @@ ActiveRecord::Schema.define(version: 20180107182234) do
     t.boolean "do_not_repost"
     t.boolean "in_post_queue"
     t.boolean "favorite"
+    t.string "video_poster_ipfs_hash"
+    t.string "video_sprites_ipfs_hash"
+    t.string "video240p_ipfs_hash"
+    t.string "video480p_ipfs_hash"
+    t.string "video720p_ipfs_hash"
+    t.string "video_poster_path"
+    t.string "video_sprites_path"
+    t.string "video240p_path"
+    t.string "video480p_path"
+    t.string "video720p_path"
+    t.string "video_duration"
+    t.string "video_filesize"
+    t.string "dtube_permalink"
     t.index ["permalink_id"], name: "index_zolna_embed_pages_unique"
   end
 

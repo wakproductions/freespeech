@@ -14,12 +14,14 @@ gem 'slim'
 # gem 'turbolinks', '~> 5'
 gem 'jquery-rails'
 gem 'uglifier', '>= 1.3.0'
+gem 'tzinfo-data'
 
 gem 'bootstrap-sass'
 
 gem 'ipfs'
 gem 'nokogiri'
 gem 'radiator'#, path: '~/Development/radiator'
+gem 'streamio-ffmpeg'
 gem 'typhoeus'
 gem 'verbalize'
 

@@ -2,7 +2,7 @@ module Zolna
   class ParseDirectoryListing
     include Verbalize::Action
 
-    INDEX_URL='https://zolnareport.com/2018/'
+    INDEX_URL="https://zolnareport.com/#{ENV.parse('CURRENT_YEAR')}/"
 
     def call
       fail! 'failed to download the video index' unless index_html.code==200
